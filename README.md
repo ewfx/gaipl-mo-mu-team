@@ -1,4 +1,4 @@
-# 🚀 Project Name
+# 🚀 Project Name: GAEIPE
 
 ## 📌 Table of Contents
 - [Introduction](#introduction)
@@ -24,37 +24,38 @@ A brief overview of your project and its purpose. Mention which problem statemen
 ![Screenshot 1](link-to-image)
 
 ## 💡 Inspiration
-What inspired you to create this project? Describe the problem you're solving.
+The solution is inspired from our day to day activities which we have been facing especially while migrating from one Data center to another. There is a huge chellange in where the documentation of our existing system is not available and then there is a lot of informationo on KB docuemantion of various process that are out dated.
 
 ## ⚙️ What It Does
-Explain the key features and functionalities of your project.
+No ample time
 
 ## 🛠️ How We Built It
-Briefly outline the technologies, frameworks, and tools used in development.
+- 🔹 Frontend: javascript / Bootstrap
+- 🔹 Backend:  Flask
+- 🔹 Database: MySQL
+- 🔹 Other: OpenAI API
 
 ## 🚧 Challenges We Faced
-Describe the major technical or non-technical challenges your team encountered.
+No baseline or base project defined. Everything has to be developed from scratch
 
 ## 🏃 How to Run
 1. Clone the repository  
    ```sh
-   git clone https://github.com/your-repo.git
-   ```
-2. Install dependencies  
-   ```sh
-   npm install  # or pip install -r requirements.txt (for Python)
-   ```
-3. Run the project  
-   ```sh
-   npm start  # or python app.py
-   ```
+   git clone git@github.com:ewfx/gaipl-mo-mu-team.git
+2. pip install openai
+3. pip install flask
+3. export the environment vairable to set up key for OPEN AI
+   setx OPENAI_API_KEY [key]
+4. Run the main script that runss the apps.
+   python code\src\Pylib\app.py
 
 ## 🏗️ Tech Stack
-- 🔹 Frontend: React / Vue / Angular
-- 🔹 Backend: Node.js / FastAPI / Django
-- 🔹 Database: PostgreSQL / Firebase
-- 🔹 Other: OpenAI API / Twilio / Stripe
+- 🔹 Frontend: javascript / Bootstrap
+- 🔹 Backend:  Flask
+- 🔹 Database: MySQL
+- 🔹 Other: OpenAI API
 
 ## 👥 Team
-- **Your Name** - [GitHub](#) | [LinkedIn](#)
-- **Teammate 2** - [GitHub](#) | [LinkedIn](#)
+- Murali Gopal Narayanam - [https://github.com/murali4uonline](murali4uonline) | [https://www.linkedin.com/in/murali-mg-narayanam-53958b33/](#)
+- Prathyusha Anumolu - [https://github.com/PrathyushaAnumoluGitHub](PrathyushaAnumolu) | [LinkedIn](#)
+- Kapuganti Mounish S - [https://github.com/KSM45](KSM45) | [LinkedIn](#)
