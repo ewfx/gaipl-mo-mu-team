@@ -12,6 +12,14 @@
     <link rel="stylesheet" href="assets/css/Chat.css">
     <link rel="stylesheet" href="assets/css/Login-Form-Basic-icons.css">
     <link rel="stylesheet" href="assets/css/Simple-Bootstrap-Chat.css">
+    <style>
+        .spinner-border {
+            display: none;
+            width: 3rem;
+            height: 3rem;
+            border-width: 0.3em;
+        }
+    </style>
 </head>
 
 <body>
@@ -30,7 +38,7 @@
 <div class="container py-5 px-4">
   <!-- For demo purpose-->
   <header class="text-center">
-    <h1 class="display-4 text-white">AI enabled Chat</h1>
+    <h1 class="display-4 text-white d-flex flex-column">AI enabled Chat</h1>
   </header>
 
  
@@ -48,23 +56,30 @@
 
 
       </div>
-
       <!-- Typing area -->
       <form action="#" class="bg-light">
         <div class="input-group">
-          <input id="input-text-box" type="text" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
-          <div class="input-group-append">
+          <input id="input-text-box" type="text" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-2 border-2 py-4 bg-light">
+          <div class="input-group-append gap-1">
             <script type="text/javascript">
               async function sendMessage() {
                   const userInput = document.getElementById('input-text-box').value;
+                  const context = document.getElementById('context-select').value;
+                  document.getElementById('input-text-box').value = '';
+                  const spinner = document.getElementById('loading-spinner');
+                  const actioned_button=document.getElementById('button-addon2');
+                  actioned_button.style.display = 'none';
+                  spinner.style.display = 'block';
                   const response = await fetch('/chat', {
                       method: 'POST',
                       headers: {
                           'Content-Type': 'application/json'
                       },
-                      body: JSON.stringify({ message: userInput })
+                      body: JSON.stringify({ message: userInput, context: context })
                   });
                   const data = await response.json();
+                  spinner.style.display = 'none';
+                  actioned_button.style.display = 'block';
                   const messagesDiv = document.getElementById('message-box');
                   const now = new Date();
                   const hours = String(now.getHours()).padStart(2, '0');
@@ -76,26 +91,42 @@
                       messagesDiv.innerHTML += `<div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
                   <div class="media-body ml-3">
                     <div class="bg-light rounded py-2 px-3 mb-2">
-                      <p class="text-small mb-0 text-muted">${userInput}</p>
+                      <p class="text-small mb-0 text-muted"><b>User : </b>${userInput}</p>
                     </div>
                     <p class="small text-muted">${timeString}</p>
                   </div>
                 </div>`;
                       messagesDiv.innerHTML += `<div class="media w-50 ml-auto mb-3">
                   <div class="media-body">
-                    <div class="bg-primary rounded py-2 px-3 mb-2">
-                      <p class="text-small mb-0 text-white">${data.message}</p>
+                    <div class="bg-primary rounded py-2 px-3 mb-2 text-end">
+                      <p class="text-small mb-0 text-white">${data.message}<b> : Bot</b></p>
                     </div>
-                    <p class="small text-muted">${timeString}</p>
+                    <p class="small text-muted text-end">${timeString}</p>
                   </div>
                 </div>`;
+                      // Scroll to the latest message
+                      const lastMessage = messagesDiv.lastElementChild;
+                      lastMessage.scrollIntoView({ behavior: 'smooth' });
                   } else {
                       messagesDiv.innerHTML += `<p><strong>Error:</strong> ${data.error}</p>`;
                   }
-                  document.getElementById('input-text-box').value = '';
               }
           </script>
-            <button id="button-addon2" type="submit" class="btn btn-link" onclick="sendMessage()"> <i class="fa fa-paper-plane"></i></button>
+          <div class="d-flex flex-column">
+            <div id="loading-spinner" class="spinner-border text-primary mt-3" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <button id="button-addon2" type="submit" class="btn btn-link mb-2" onclick="sendMessage()"> <i class="fa fa-paper-plane"></i></button>
+            <select id="context-select" class="form-select">
+              <option value="general">General</option>
+              <option value="technical">Technical</option>
+              <option value="Unix">Unix</option>
+              <option value="OpenCloudPlatform">OCP</option>
+              <option value="ApplicationSunrises">Application Sunrise</option>
+              <option value="ApplicationSunset">Application Sunset</option>
+            </select>
+
+          </div>
           </div>
         </div>
       </form>

@@ -12,16 +12,22 @@
         <div id="messages"></div>
         <input type="text" id="user-input" placeholder="Type a message...">
         <button onclick="sendMessage()">Send</button>
+        <select id="context-select">
+            <option value="general">General</option>
+            <option value="technical">Technical</option>
+            <option value="casual">Casual</option>
+        </select>
     </div>
     <script>
         async function sendMessage() {
             const userInput = document.getElementById('user-input').value;
+            const context = document.getElementById('context-select').value;
             const response = await fetch('/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message: userInput })
+                body: JSON.stringify({ message: userInput, context: context })
             });
             const data = await response.json();
             const messagesDiv = document.getElementById('messages');

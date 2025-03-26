@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, render_template, request, jsonify
+from flask import Flask, send_from_directory, render_template, request, jsonify,redirect, url_for
 import os
 import openai
 
@@ -6,6 +6,9 @@ app = Flask(__name__)
 
 # Define the path to the directory containing the HTML files
 HTML_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'webpages')
+
+# Define the path to the flat file
+FLAT_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'contexts.txt')
 
 @app.route('/')
 def home():
@@ -30,6 +33,13 @@ def chat():
         return jsonify({'message': chatbot_message})
     except openai.error.OpenAIError as e:
         return jsonify({'error': str(e)})
-
+## API to load contexts to a flat file contexts.txt
+@app.route('/save_contexts', methods=['POST'])
+def save_contexts():
+    contexts = request.form.getlist('contexts')
+    with open(FLAT_FILE_PATH, 'w') as file:
+        for context in contexts:
+            file.write(f"{context}\n")
+    return redirect(url_for('home'))
 if __name__ == '__main__':
     app.run(debug=True)
