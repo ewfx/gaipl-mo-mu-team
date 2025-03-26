@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Context Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>gaipl-mo-mu-team - Context Form</title>
+    <meta name="description" content="This website is being created for a Hackathon of gaipl">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
+    <link rel="stylesheet" href="assets/css/Chat.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Basic-icons.css">
+    <link rel="stylesheet" href="assets/css/Simple-Bootstrap-Chat.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,16 +41,28 @@
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand bg-light">
+        <div class="container"><a class="navbar-brand" href="#">GAEIPE</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
+            <div class="collapse navbar-collapse text-decoration-none" id="navcol-1">
+                <ul class="list-group list-group-horizontal text-end ms-auto">
+                    <li class="list-group-item text-decoration-none"><a href="index.html" style="text-decoration:none"><strong class="text-decoration-none text-muted">Home</strong></a></li>
+                    <li class="list-group-item" style="text-decoration:none"><a href="AIChat.html" style="text-decoration:none"><strong class="text-decoration-none text-muted">AI Chat</strong></a></li>
+                    <li class="list-group-item"><a href="#" style="text-decoration:none"><strong class="text-decoration-none text-muted" style="text-decoration:none">Features</strong></a></li>
+                    <li class="list-group-item" style="text-decoration:none"><a href="#" style="text-decoration:none"><strong class="text-decoration-none text-muted" style="text-decoration:none">Knowledge Base</strong></a></li>
+                </ul><a class="btn btn-primary ms-auto" role="button" href="Login.html">Sign In</a>
+            </div>
+        </div>
+    </nav>
     <h1>Enter Contexts</h1>
-    <form action="{{ url_for('save_contexts') }}" method="post">
-        <div id="context-fields">
+    <form action="#">
+        <div id="context-fields" class="mb-3 form-group d-flex flex-column">
             <input type="text" name="contexts" placeholder="Enter context" required>
         </div>
         <button type="button" onclick="addContextField()">Add Another Context</button>
-        <button type="submit">Save Contexts</button>
+        <button type="submit" onclick="saveContextFields()">Save Contexts</button>
     </form>
 
-    <script>
+    <script type="text/javascript">
         function addContextField() {
             const contextFields = document.getElementById('context-fields');
             const newField = document.createElement('input');
@@ -52,6 +72,23 @@
             newField.required = true;
             contextFields.appendChild(newField);
         }
+        function saveContextFields() {
+            const contextFields = document.getElementById('context-fields');
+            const contexts = Array.from(contextFields.querySelectorAll('input[name="contexts"]')).map(input => input.value);
+            const response = fetch('/save_contexts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ contexts: contexts })
+            }).then(response => response.json())
+              .then(data => console.log(data))
+              const messagesDiv = document.getElementById('message-box');
+              messagesDiv.value = "Contexts saved successfully";
+        }
     </script>
+    <div>
+        <p id="message-box"></p>
+    </div>
 </body>
 </html>

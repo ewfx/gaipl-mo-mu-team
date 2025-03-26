@@ -33,13 +33,25 @@ def chat():
         return jsonify({'message': chatbot_message})
     except openai.error.OpenAIError as e:
         return jsonify({'error': str(e)})
+    
 ## API to load contexts to a flat file contexts.txt
 @app.route('/save_contexts', methods=['POST'])
 def save_contexts():
-    contexts = request.form.getlist('contexts')
-    with open(FLAT_FILE_PATH, 'w') as file:
+    contexts = request.json.get('contexts', [])
+    with open(FLAT_FILE_PATH, 'a') as file:  # Change 'w' to 'a' to append to the file
         for context in contexts:
             file.write(f"{context}\n")
     return redirect(url_for('home'))
+
+## API to fetch data from context files
+@app.route('/getContexts', methods=['GET'])
+def get_contexts():
+    try:
+        with open(FLAT_FILE_PATH, 'r') as file:
+            contexts = file.read().splitlines()
+        return jsonify({'contexts': contexts})
+    except FileNotFoundError:
+        return jsonify({'error': 'Contexts file not found'}), 404
+
 if __name__ == '__main__':
     app.run(debug=True)

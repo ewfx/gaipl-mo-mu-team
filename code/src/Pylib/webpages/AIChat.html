@@ -29,6 +29,7 @@
                 <ul class="list-group list-group-horizontal text-end ms-auto">
                     <li class="list-group-item text-decoration-none"><a href="index.html" style="text-decoration:none"><strong class="text-muted">Home</strong></a></li>
                     <li class="list-group-item active text-decoration-none"><a class="text-decoration-none" href="AIChat.html"><strong class="text-muted">AI Chat</strong></a></li>
+                    <li class="list-group-item text-decoration-none"><a class="text-decoration-none" href="AddContext.html"><strong class="text-decoration-none text-muted">Add contexts</strong></a></li>
                     <li class="list-group-item text-decoration-none"><a class="text-decoration-none" href="#"><strong class="text-decoration-none text-muted">Features</strong></a></li>
                     <li class="list-group-item text-decoration-none"><a class="text-decoration-none" href="#"><strong class="text-muted">Knowledge Base</strong></a></li>
                 </ul><a class="btn btn-primary ms-auto" role="button" href="Login.html">Sign In</a>
@@ -118,12 +119,21 @@
             </div>
             <button id="button-addon2" type="submit" class="btn btn-link mb-2" onclick="sendMessage()"> <i class="fa fa-paper-plane"></i></button>
             <select id="context-select" class="form-select">
-              <option value="general">General</option>
-              <option value="technical">Technical</option>
-              <option value="Unix">Unix</option>
-              <option value="OpenCloudPlatform">OCP</option>
-              <option value="ApplicationSunrises">Application Sunrise</option>
-              <option value="ApplicationSunset">Application Sunset</option>
+              <!-- Options will be populated by JavaScript -->
+              <script>
+                document.addEventListener('DOMContentLoaded', async () => {
+                  const response = await fetch('/getContexts');
+                  const data = await response.json();
+                  const contexts = data.contexts;
+                  const select = document.getElementById('context-select');
+                  contexts.forEach(context => {
+                    const option = document.createElement('option');
+                    option.value = context;
+                    option.textContent = context;
+                    select.appendChild(option);
+                  });
+                });
+              </script>
             </select>
 
           </div>
@@ -135,6 +145,7 @@
   </div>
 </div>
 </div><!-- End: Simple Bootstrap Chat -->
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     
