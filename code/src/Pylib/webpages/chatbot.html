@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chatbox">
+        <div id="messages"></div>
+        <input type="text" id="user-input" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userInput })
+            });
+            const data = await response.json();
+            const messagesDiv = document.getElementById('messages');
+            if (data.message) {
+                messagesDiv.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
+                messagesDiv.innerHTML += `<p><strong>Bot:</strong> ${data.message}</p>`;
+            } else {
+                messagesDiv.innerHTML += `<p><strong>Error:</strong> ${data.error}</p>`;
+            }
+            document.getElementById('user-input').value = '';
+        }
+    </script>
+</body>
+</html>

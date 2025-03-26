@@ -36,75 +36,66 @@
  
     <!-- Chat Box-->
     <div class="col-12 px-0">
-      <div class="px-4 py-5 chat-box bg-white">
+      <div id ="message-box" class="px-4 py-5 chat-box bg-white">
         <!-- Sender Message-->
-        <div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
+        <div class="media w-50 mb-3">
           <div class="media-body ml-3">
             <div class="bg-light rounded py-2 px-3 mb-2">
-              <p class="text-small mb-0 text-muted">Test which is a new approach all solutions</p>
+              <p class="text-small mb-0 text-muted">Please post your question here</p>
             </div>
-            <p class="small text-muted">12:00 PM | Aug 13</p>
           </div>
         </div>
 
-        <!-- Reciever Message-->
-        <div class="media w-50 ml-auto mb-3">
-          <div class="media-body">
-            <div class="bg-primary rounded py-2 px-3 mb-2">
-              <p class="text-small mb-0 text-white">Test which is a new approach to have all solutions</p>
-            </div>
-            <p class="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
-
-        <!-- Sender Message-->
-        <div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-          <div class="media-body ml-3">
-            <div class="bg-light rounded py-2 px-3 mb-2">
-              <p class="text-small mb-0 text-muted">Test, which is a new approach to have</p>
-            </div>
-            <p class="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
-
-        <!-- Reciever Message-->
-        <div class="media w-50 ml-auto mb-3">
-          <div class="media-body">
-            <div class="bg-primary rounded py-2 px-3 mb-2">
-              <p class="text-small mb-0 text-white">Apollo University, Delhi, India Test</p>
-            </div>
-            <p class="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
-
-        <!-- Sender Message-->
-        <div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-          <div class="media-body ml-3">
-            <div class="bg-light rounded py-2 px-3 mb-2">
-              <p class="text-small mb-0 text-muted">Test, which is a new approach</p>
-            </div>
-            <p class="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
-
-        <!-- Reciever Message-->
-        <div class="media w-50 ml-auto mb-3">
-          <div class="media-body">
-            <div class="bg-primary rounded py-2 px-3 mb-2">
-              <p class="text-small mb-0 text-white">Apollo University, Delhi, India Test</p>
-            </div>
-            <p class="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
 
       </div>
 
       <!-- Typing area -->
       <form action="#" class="bg-light">
         <div class="input-group">
-          <input type="text" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
+          <input id="input-text-box" type="text" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
           <div class="input-group-append">
-            <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+            <script type="text/javascript">
+              async function sendMessage() {
+                  const userInput = document.getElementById('input-text-box').value;
+                  const response = await fetch('/chat', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ message: userInput })
+                  });
+                  const data = await response.json();
+                  const messagesDiv = document.getElementById('message-box');
+                  const now = new Date();
+                  const hours = String(now.getHours()).padStart(2, '0');
+                  const minutes = String(now.getMinutes()).padStart(2, '0');
+                  const seconds = String(now.getSeconds()).padStart(2, '0');
+                  const timeString = `${hours}:${minutes}:${seconds}`;
+        
+                  if (data.message) {
+                      messagesDiv.innerHTML += `<div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
+                  <div class="media-body ml-3">
+                    <div class="bg-light rounded py-2 px-3 mb-2">
+                      <p class="text-small mb-0 text-muted">${userInput}</p>
+                    </div>
+                    <p class="small text-muted">${timeString}</p>
+                  </div>
+                </div>`;
+                      messagesDiv.innerHTML += `<div class="media w-50 ml-auto mb-3">
+                  <div class="media-body">
+                    <div class="bg-primary rounded py-2 px-3 mb-2">
+                      <p class="text-small mb-0 text-white">${data.message}</p>
+                    </div>
+                    <p class="small text-muted">${timeString}</p>
+                  </div>
+                </div>`;
+                  } else {
+                      messagesDiv.innerHTML += `<p><strong>Error:</strong> ${data.error}</p>`;
+                  }
+                  document.getElementById('input-text-box').value = '';
+              }
+          </script>
+            <button id="button-addon2" type="submit" class="btn btn-link" onclick="sendMessage()"> <i class="fa fa-paper-plane"></i></button>
           </div>
         </div>
       </form>
@@ -115,6 +106,7 @@
 </div><!-- End: Simple Bootstrap Chat -->
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
+    
 </body>
 
 </html>
